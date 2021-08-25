@@ -4,13 +4,14 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-// GET   /api/todo/
+// GET   /api/todo/folderId
 // Get all todos
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/:folderId", authMiddleware, async (req, res) => {
   try {
     const todos = await Todo.findAll({
       where: {
         userId: req.user.id,
+        folderId: req.params.folderId,
       },
     });
     if (todos) {
@@ -23,13 +24,14 @@ router.get("/", authMiddleware, async (req, res) => {
   }
 });
 
-// POST   /api/todo/
+// POST   /api/todo/folderId
 // Create a new todo
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/:folderId", authMiddleware, async (req, res) => {
   try {
     const todo = await Todo.create({
       ...req.body,
       userId: req.user.id,
+      folderId: req.params.folderId,
     });
     res.send(todo);
   } catch (error) {
