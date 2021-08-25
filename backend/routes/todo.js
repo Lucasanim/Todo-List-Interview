@@ -33,7 +33,13 @@ router.post("/:folderId", authMiddleware, async (req, res) => {
       userId: req.user.id,
       folderId: req.params.folderId,
     });
-    res.send(todo);
+    const todos = await Todo.findAll({
+      where: {
+        userId: req.user.id,
+        folderId: req.params.folderId,
+      },
+    });
+    res.send(todos);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -85,6 +91,33 @@ router.patch("/:id", authMiddleware, async (req, res) => {
     }
     await todo.save();
     res.send(todo);
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+// DELETE   /api/todo/id
+// delete specific todo
+router.delete("/:id/:folderId", authMiddleware, async (req, res) => {
+  try {
+    console.log("req.params.folderId:", req.params.folderId);
+    const todo = await Todo.destroy({
+      where: {
+        userId: req.user.id,
+        id: req.params.id,
+      },
+    });
+    const todos = await Todo.findAll({
+      where: {
+        userId: req.user.id,
+        folderId: req.params.folderId,
+      },
+    });
+    if (todos) {
+      return res.send(todos);
+    }
+    res.status(404).send({ message: "Not Found." });
   } catch (error) {
     console.log(error);
     res.status(500).send(error);

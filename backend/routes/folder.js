@@ -31,7 +31,12 @@ router.post("/", authMiddleware, async (req, res) => {
       ...req.body,
       userId: req.user.id,
     });
-    res.send(folder);
+    const folders = await Folder.findAll({
+      where: {
+        userId: req.user.id,
+      },
+    });
+    res.send(folders);
   } catch (error) {
     console.log(error);
     res.status(400).send(error);
@@ -51,6 +56,32 @@ router.get("/:id", authMiddleware, async (req, res) => {
 
     if (folder) {
       return res.send(folder);
+    }
+    res.status(404).send({ message: "Not Found." });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error);
+  }
+});
+
+// DELETE   /api/folder/id
+// Delete specific folder
+router.delete("/:id", authMiddleware, async (req, res) => {
+  try {
+    const folder = await Folder.destroy({
+      where: {
+        userId: req.user.id,
+        id: req.params.id,
+      },
+    });
+
+    const folders = await Folder.findAll({
+      where: {
+        userId: req.user.id,
+      },
+    });
+    if (folders) {
+      return res.send(folders);
     }
     res.status(404).send({ message: "Not Found." });
   } catch (error) {
