@@ -1,6 +1,5 @@
 {
   "name": "todo-list-frontend",
-  "proxy": "http://localhost:10917",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
