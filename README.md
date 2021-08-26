@@ -7,6 +7,14 @@ This application was made with NodeJs and Express in the Backend, ReactJs in the
 
 ## How To Use
 
+To install all dependencies and run the app you can do:
+
+```bash
+bash run.sh
+```
+
+## Manual instalation and usage
+
 ### Step 1
 
 Install dependencies.
@@ -22,6 +30,10 @@ Run the app (In the root folder)
 ```bash
 npm run dev
 ```
+
+## Run Script
+
+Instead of doing the above commands, you can just d
 
 ## Default User You Can Use
 
