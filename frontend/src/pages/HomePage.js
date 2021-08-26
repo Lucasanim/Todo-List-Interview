@@ -37,7 +37,7 @@ const HomePage = () => {
       ) : (
         <>
           {folders?.length ? (
-            folders.map((folder) => {
+            folders?.map((folder) => {
               return <Folder key={folder.id} folder={folder} />;
             })
           ) : (
