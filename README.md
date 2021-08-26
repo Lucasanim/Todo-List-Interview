@@ -31,10 +31,6 @@ Run the app (In the root folder)
 npm run dev
 ```
 
-## Run Script
-
-Instead of doing the above commands, you can just d
-
 ## Default User You Can Use
 
 ```bash
