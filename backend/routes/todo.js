@@ -67,9 +67,9 @@ router.get("/current/:id", authMiddleware, async (req, res) => {
   }
 });
 
-// PATCH   /api/todo/id/folderId
-// Update specific todo
-router.patch("/:id/:folderId", authMiddleware, async (req, res) => {
+// PATCH   /api/todo/updateTutle/id/folderId
+// Update specific todo title
+router.patch("/updateTitle/:id/:folderId", authMiddleware, async (req, res) => {
   try {
     const todo = await Todo.findOne({
       where: {
@@ -80,12 +80,6 @@ router.patch("/:id/:folderId", authMiddleware, async (req, res) => {
 
     if (!todo) {
       return res.status(404).send({ message: "Not Found." });
-    }
-    console.log("req.body.completed: ", req.body.completed);
-    if (req.body.completed) {
-      await todo.update({
-        completed: 0,
-      });
     }
 
     if (req.body.title) {
@@ -109,6 +103,45 @@ router.patch("/:id/:folderId", authMiddleware, async (req, res) => {
     res.status(500).send(error);
   }
 });
+
+// PATCH   /api/todo/updateComplete/id/folderId
+// Update specific todo completion
+router.patch(
+  "/updateComplete/:id/:folderId",
+  authMiddleware,
+  async (req, res) => {
+    try {
+      const todo = await Todo.findOne({
+        where: {
+          userId: req.user.id,
+          id: req.params.id,
+        },
+      });
+
+      if (!todo) {
+        return res.status(404).send({ message: "Not Found." });
+      }
+
+      await todo.update({
+        completed: req.body.completed,
+      });
+
+      const todos = await Todo.findAll({
+        where: {
+          userId: req.user.id,
+          folderId: req.params.folderId,
+        },
+      });
+      if (todos) {
+        return res.send(todos);
+      }
+      res.status(404).send({ message: "Not Found." });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send(error);
+    }
+  }
+);
 
 // DELETE   /api/todo/id/folderId
 // delete specific todo
