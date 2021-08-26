@@ -31,6 +31,10 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use("/api/todo", todoRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/folder", folderRouter);
+
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "..", "/frontend/build")));
 
@@ -40,10 +44,6 @@ if (process.env.NODE_ENV === "production") {
     )
   );
 }
-
-app.use("/api/todo", todoRouter);
-app.use("/api/auth", authRouter);
-app.use("/api/folder", folderRouter);
 
 const port = process.env.PORT || 5000;
 sequelize
